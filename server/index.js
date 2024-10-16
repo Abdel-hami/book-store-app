@@ -40,21 +40,56 @@ async function run() {
     })
 
     // get all books from the database
-    app.get("/all-books", async(req,res)=>{
-      const books = bookCollection.find();
-      const data = await books.toArray();
-      res.send(data)
-    })
+    // app.get("/all-books", async(req,res)=>{
+    //   const books = bookCollection.find();
+    //   const data = await books.toArray();
+    //   res.send(data)
+    // })
 
     // update a book data: patch or update
-    app.patch("/book/:id", (res,req)=>{
+    app.patch("/book/:id", async(req,res)=>{
       const id = req.params.id;
       const ToUpdateBooksData  = req.body;
-      const filter = {_id: new ObjectId(id)}
-      const options = {upsert:true}
+      const filter = {_id: new ObjectId(id)};
+      const options = {upsert:true};
+
+      const updateDoc = {
+        $set: {
+          ...ToUpdateBooksData
+        }
+      }
+      // update
+      const result = await bookCollection.updateOne(filter,updateDoc,options);
+
+      res.send(result)
     })
 
+    // delete a book
+    app.delete("/book/:id", async(req,res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const result = await bookCollection.deleteOne(filter);
+      res.send(result)
+    })
 
+    // filter data by category
+
+    app.get("/all-books", async(req,res)=>{
+      let query = {};
+      if(req.query?.category) {
+        query = {category : req.query.category}
+      }
+      const result = await bookCollection.find(query).toArray()
+      res.send(result);
+    })
+    // to get single book data
+    app.get("/book/:id", async(req,res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const result = await bookCollection.findOne(filter);
+      res.send(result);
+
+    })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
