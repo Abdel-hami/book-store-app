@@ -4,9 +4,9 @@ import BookCard from '../components/BookCard'
 const FavoriteBook = () => {
     const [books, setBooks] = useState([])
     useEffect(()=>{
-        fetch("http://127.0.0.1:5000/all-books")
+        fetch("http://localhost:5000/all-books")
         .then(res=>res.json())
-        .then(data => setBooks(data))
+        .then(data => setBooks(data.slice(0,7)))
     }, [])
   return (
     <div>
