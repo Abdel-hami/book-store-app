@@ -45,7 +45,7 @@ const Navbar = () => {
                         {
                             navItems.map(({ link, path }) =>
                                 <Link
-                                    path={path}
+                                    to={path}
                                     key={path}
                                     className="block text-base text-black uppercase cursor-pointer hover:text-blue-700"
                                 >{link}</Link>
