@@ -50,9 +50,10 @@ const UploadBook = () => {
             body: JSON.stringify(handlObj)
         })
             .then(res => res.json())
-            .then(data => { 
+            .then(data => {
                 alert("book uploaded succesfully");
-            form.reset(); })
+                form.reset();
+            })
     }
 
     return (
