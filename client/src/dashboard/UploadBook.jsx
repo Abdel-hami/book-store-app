@@ -54,7 +54,7 @@ const UploadBook = () => {
                 alert("book uploaded succesfully");
                 form.reset();
             })
-    }
+    } 
 
     return (
         <div className='px-4 my-12 '>
